@@ -34,7 +34,7 @@ Finally, we need install our libraries. Most of what we need is installed in Col
 
 Now we are ready to get to work!
 # Familiarize yourself with the data
-Our dataset was assembled for the purpose of predicting the stability of perovskites. These materials generally have a composition of $ABX_3$
+Our dataset was assembled for the purpose of predicting the stability of perovskites. These materials generally have a composition of $$ABX_3$$ and have a characteristic crystal structure. You can read more about these materials [here](https://en.wikipedia.org/wiki/Perovskite_(structure)). The stability of these materials is quantified by the Energy Above Hull, which is determined using DFT calculations. The lower this value, the more stable the material. The rest of the features in the dataset are properties obtained from materials project
 
 Let's load the data in our jupyter notebook. The file path shown below assumes you saved your dataset to the highest level of your Google Drive. If you put it in some folder, you will have to change the path to point to that folder.
 ```
@@ -45,16 +45,15 @@ We can get an idea of how much data we have by looking at the number of rows and
 ```
 df.shape
 ```
-It is also important to check if there are any missing values. We can see how much of the dataframe is missing values like this:
+We can also look at the first few rows of our data using:
 ```
-na = df.isna().sum().sum()
+df.head()
+```
+You'll notice that some of the features are categorical data about which elements occupy the different sites in the crystal. Some of these values are NaN. While CatBoost automatically handles missing data for numerical features, this doesn't work for categorical data. Luckily, it usually makes sense to treat missing values as their own category and fill the NaNs with something like "None". Here's one way to do this:
 
-rows, columns = df.shape
-total_values = rows * columns
-percentage_na = (na / total_values) * 100
-print(f"Percentage of NaN values: {percentage_na:.2f}%")
 ```
-There are a fair amount of missing values in our dataset. In complex manufacturing processes like this, it is common for measurements to be missed from time to time. For many machine learning models this would be a problem. Luckily CatBoost can handle this with no extra work from us.
+df.iloc[:, 1:7] = df.iloc[:, 1:7].fillna('None')
+```
 
 # Building our first model
 
@@ -62,27 +61,40 @@ Let's train our first model. First, add the import for the CatBoost library to y
 ```
 import catboost
 ```
-Next, we'll split our data for training and testing. This is often done randomly. However, in real life manufacturing, we can only use data from the past to predict what will happen in the future. This means it is more practical to split based on time. We will use a 70-30 split.
+Next, we'll split our data for training and testing. In this case, we can use a random split. First we'll separate out our input and target features. The 'Material Composition' column is there for identification, but is not useful for our model, so we'll remove it. Our target is the column 'energy_above_hull (meV/atom)'. The rest of the columns will be out input.
 ```
-df = df.sort_values(by='Time')
-split_point = int(len(df) * 0.7)
-train_df = df[:split_point]
-test_df = df[split_point:]
+X = df.drop(['energy_above_hull (meV/atom)'], axis=1)
+y = df['energy_above_hull (meV/atom)']
 ```
-We then need to identify our target and features we will use to predict it. Our target is Pass/Fail and we will use all of the remaining columns for our features.
+We can then use the train_test_split method to split up the data. We'll use 60% for training, 20% for validation, and 20% for testing. Be sure to add the import .
 ```
-X_train = train_df.drop(['Time', 'Pass/Fail'], axis=1)
-y_train = train_df['Pass/Fail']
-X_test = test_df.drop(['Time', 'Pass/Fail'], axis=1)
-y_test = test_df['Pass/Fail']
+from sklearn.model_selection import train_test_split
 ```
-Now we can create a model with some default parameters and train it using our data. CatBoost offeres two types of model: classifier and regressor. Since we are performing a classification task, we will use classifier.
 ```
-model = catboost.CatBoostClassifier(iterations=100,
-                                    learning_rate=0.1,
-                                    depth=6)
+X_train_val, X_test, y_train_val, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+X_train, X_val, y_train, y_val = train_test_split(
+    X_train_val, y_train_val, test_size=0.25, random_state=42
+)
 ```
-That probably took a few minutes. Not too bad, but when we want to optimize our parameters we will have to train many models. By default, the CPU is used to train the model. Let's adjust our code to make sure we are taking advantage of the GPU! `devices='0'` lets us specify which GPU to use with 0 based indexing. We only have one so we use GPU 0.
+Finally, we need to tell the model which columns contain categorical data. One way to do this is by providing a list of the indexes of the columns that contain categorical data. In our X dataframe, the categorical data is in the first 7 columns, so we need to specify indexes 0-6.
+
+```
+cat_features = list(range(0,7))
+```
+
+Now we can create a model with some default parameters and train it using our data. CatBoost offeres two types of model: classifier and regressor. Since we are performing a regression task, we will use regressor.
+```
+model = catboost.CatBoostRegressor(iterations=1000,
+                                   learning_rate=0.01,
+                                   depth=3,
+                                   one_hot_max_size = 50,
+                                   cat_features=cat_features,
+                                   verbose = 100,)
+```
+That didn't take too long, but we can try using the GPU to speed things up. By default, the CPU is used to train the model. Let's adjust our code to take advantage of the GPU! We can do this by adding the parameter `task_type="GPU"`. Additionally, `devices='0'` lets us specify which GPU to use with 0 based indexing. We only have one so we use GPU 0.
 ```
 model = catboost.CatBoostClassifier(iterations=100,
                                     learning_rate=0.1,
@@ -90,62 +102,67 @@ model = catboost.CatBoostClassifier(iterations=100,
                                     task_type="GPU",
                                     devices='0')
 ```
-Nice! That took about half the time. Colab lets us use these GPUs for free, which is awesome. But, they are far from the most powerful. Using a nicer GPU, say on hyak, can be orders of magnitude faster. If you have a GPU on your own computer, you could try it out to see how it compares! (Mine is much slower than the one Colab gives us :sweat_smile:)
+In this case, the CPU seems to be faster. In general CPU's are designed to handle sequential tasks while GPU's have much more capacity for parallel computing. When training a model like this, there are a lot of sequential tasks that take place. With higher dimensional data, the complexity of each of these tasks increases, making parallel processing power more useful. This means that it is not one size fits all whether GPU or CPU is better. This tradeoff also depends on the specific hardware you have access to.
 
 Now, let's see how the model performed. First we need to use it to make predictions based on our test set.
 ```
 y_pred = model.predict(X_test)
 ```
-Next we'll visualize the results. For classification tasks, a confusion matrix is commonly used to evaluate models. This lets us look at how the model performs at predicting both passes and fails.
-```
-cm = confusion_matrix(y_test, y_pred)
+Next we'll visualize the results. For regression tasks like this, it is nice to visualize the models performance by creating a scatter plot where the x-axis the actual values and the y-axis is the predicted values. If the model was perfect, all of the points would lie on the line y=x, so it is also helpful to include the line for reference. We can also add another curve below to show the density of points along the x-axis using a kernel density estimator. Try to make one of these plots yourself. LLMs like ChatGPT are quite good at tasks like this. This plot will be part of the submission for this hands on assignment.
 
-plt.figure(figsize=(6, 5))
-sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=[0, 1, 2], yticklabels=[0, 1, 2])
-plt.xlabel("Predicted Label")
-plt.ylabel("True Label")
-plt.title("Confusion Matrix")
-plt.show()
-```
-You might have gotten something like this:
 ![](plot1.jpg)
 
-This isn't good! The model always predicts pass. Since our dataset is over 90% passes, this gives a good accuracy, but it is totally useless.
 
-Dataset is not good for Catboost, fix later
 
 # Optimizing our Model
 
 When we define our model, we have a lot of control over the parameters that we use. These will affect the performance of our model. Lets optimize a few of these to improve the performance of our model. This process is called hyperparameter tuning.
 
-We will consider:
+Some common parameters are:
 * depth - how large each decision tree is
 * iterations - how many trees are added to the ensemble
 * learning_rate - how much each added tree can affect the prediction
+* l2_leaf_reg - adds a penalty that prevents assigning too much weight to one feature, which is useful for preventing overfitting
 
-There are many different ways to perform hyperparameter tuning. We'll use a grid search, which systematically searches all combinations of parameters specified. For now we'll search 3 options for each parameter, which will give us 27 total combinations.
+There are many different ways to perform hyperparameter tuning. Often, people will search through a set of combinations systematically to see what gives the best results. We'll take a simpler, more manual approach to build our intuition on how these parameters affect our model.
 
-First add `from sklearn.model_selection import GridSearchCV` to your imports. Then we can specify the grid to be searched, define our model, and perform the search.
+First define a new model with the following parameters:
+
 ```
-param_grid = {
-    "learning_rate": [0.001, 0.01, 0.1],
-    "depth": [2,4,6],
-    "iterations": [100, 200, 300]
-
-}
-
-reg = catboost.CatBoostClassifier(
-                 task_type="GPU",
-                 devices='0')
-grid_search = GridSearchCV(reg, param_grid=param_grid, cv=5)
-results = grid_search.fit(X_train, y_train)
-```
-This should take a few minutes as it requires training many models. After we are done, we can see the best parameters using:
-```
-results.best_estimator_.get_params()
+params = {"iterations": 1000,
+          "depth": 3,
+          "learning_rate": 0.1,
+          "l2_leaf_reg": 1,
+          "one_hot_max_size": 50,
+          "verbose": 100,
+          "loss_function": "RMSE",
+          "cat_features": cat_features}
+model2 = catboost.CatBoostRegressor(**params)
 ```
 
-Now, train a new model using these parameters.
+Then fit it as we did before. When choosing what parameters to use, it is important to be careful about overfitting. Overfitting occurs when the model performs much better on the training data than it does on unseen data. Ideally, our model would perform the same on the training and validation/test data. In reality, models will naturally perform better on their training data. This is fine as long as the performance doesn't diverge too much. How much overfitting is acceptable is subjective, and depends on the type of model, the dataset, and what you are trying to accomplish. 
+
+Let's take a look at the fit of out model by plotting the train and validation curves. The method `get_evals_result()` will give us a dictionary containing the RMSE for both the training data and validation data at each iteration of our model. These are the same numbers that are output when we trained the model. We can plot it like this:
+
+```
+scores = model2.get_evals_result()
+plt.plot(scores['learn']['RMSE'], label='train')
+plt.plot(scores['validation']['RMSE'], label='validation')
+plt.legend()
+```
+
+You should see something like this:
+
+![](plot2.jpg)
+
+
+See how the validation performance levels off, while the training performance continues to improve? This is indicative overfitting.
+
+Change the *learning rate* to .01 and train a new model. This should prevent the model from memorizing the training data too quickly.
+
+Now the training and validation curves are much closer together! But, the error has increased. Let's try increasing the *depth* to 6 so that each tree has more predictive power.
+
+This improves our performance, but causes our model to start to overfit again. We can try to prevent this by increasing the *l2_leaf_reg*. There is a balance here, as setting it too high can again lead to greater errors. Play around with this and choose a value that you think gives a good balance between performance and overfitting. There is no one right answer here, use your intuition!
 
 # Understanding Feature Importance
 
@@ -174,4 +191,36 @@ This gives us bar chart of each feature's average contribution to the final pred
 shap.summary_plot(shap_values, max_display=5)
 ```
 
-On this plot, for each feature, there is a dot for every wafer (row) from our data. The x-axis is the impact that feature had on the prediction for that wafer. The color of the dot shows the relative value of that feature for that wafer. This plot not only helps us identify which features are more impactful, but how exactly the final outcome is being affected.
+On this plot, for each feature, there is a dot for every perovskite material (row) from our data. The x-axis is the impact that feature had on the prediction for that material. The color of the dot shows the relative value of that feature for that material. This plot not only helps us identify which features are more impactful, but how exactly the final outcome is being affected.
+
+
+CatBoost also offers a different kind of plot to help us understand the feature importance. It is generated using the method `calc_feature_statistics`
+
+In most jupyter environments, the plot can be generated using:
+
+```
+model5.calc_feature_statistics(X, y, feature, plot=True)
+```
+Because of a quirk in the way Colab works, we have to add a few lines of code to get it to work.
+
+First, define a new function:
+
+```
+def enable_plotly_in_cell():
+  import IPython
+  from plotly.offline import init_notebook_mode
+  display(IPython.core.display.HTML('''<script src="/static/components/requirejs/require.js"></script>'''))
+  init_notebook_mode(connected=False)
+```
+
+Now we can generate out plot like this:
+
+```
+enable_plotly_in_cell()
+feature = 'Asite_BCCefflatcnt_range'
+x = model5.calc_feature_statistics(X, y, feature, plot=True)
+```
+
+It will look something like this:
+
+![](plot3.jpg)
