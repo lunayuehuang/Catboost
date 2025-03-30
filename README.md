@@ -37,7 +37,7 @@ Finally, we need install our libraries. Most of what we need is installed in Col
 
 Now we are ready to get to work!
 # Familiarize yourself with the data
-Our dataset was assembled for the purpose of predicting the stability of perovskites. These materials generally have a composition of $$ABX_3$$ and have a characteristic crystal structure. You can read more about these materials [here](https://en.wikipedia.org/wiki/Perovskite_(structure)). The stability of these materials is quantified by the Energy Above Hull, which is determined using DFT calculations. The lower this value, the more stable the material. The rest of the features in the dataset are properties obtained from [the Materials Project] (https://next-gen.materialsproject.org/)
+Our dataset was assembled for the purpose of predicting the stability of perovskites. These materials generally have a composition of $$ABX_3$$ and have a characteristic crystal structure. You can read more about these materials [here](https://en.wikipedia.org/wiki/Perovskite_(structure)). The stability of these materials is quantified by the Energy Above Hull, which is determined using DFT calculations. The lower this value, the more stable the material. The rest of the features in the dataset are properties obtained from [the Materials Project](https://next-gen.materialsproject.org/)
 
 Let's load the data in our jupyter notebook. The file path shown below assumes you saved your dataset to the highest level of your Google Drive. If you put it in some folder, you will have to change the path to point to that folder.
 ```
