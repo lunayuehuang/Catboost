@@ -1,7 +1,10 @@
+This is a handson designed for Missing data and Categorical Data for UW MSE 544 Big Data and Materials Informatics. 
+In this module.... 
+
 # Setting up Google Colab Notebook
 ### Say something about data security on Colab like Naomi mentioned
 
-First, go to https://colab.research.google.com/ and sign in to your google account
+First, go to https://colab.research.google.com/ and sign in to your Google account
 
 Then, create a new notebook:
 
@@ -9,7 +12,7 @@ Then, create a new notebook:
 
 You can name you notebook something nice like `CatBoost_hands_on`
 
-Next, download the dataset from Canvas
+Next, download the dataset from Canvas's "Missing data and Categorical Data" module 
 
 Colab lets you upload files to your runtime, but they are deleted once it is closed. Instead, we can take advantage of integrated connection to Google Drive. Go to your Google Drive home and click 'New' in the top left corner. Then upload the csv file. Make sure you are signed in to the same Google Account that you are using for Colab
 
