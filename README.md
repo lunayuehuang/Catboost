@@ -105,6 +105,18 @@ model = catboost.CatBoostClassifier(iterations=100,
                                     task_type="GPU",
                                     devices='0')
 ```
+If you try to run this now, you'll get an error. We need to connect to the GPU. Click on the dropdown in the upper right corner and select "Change runtime type"
+
+![](runtime_dropdown.png)
+
+![](change_type.png)
+
+Then, select T4 GPU and press save.
+
+![](t4_gpu.png)
+
+Now try performing the training on the GPU. Since we are connecting to new hardware, our runtime will be reset, so we need to re-run the code from the notebook from scratch.
+
 In this case, the CPU seems to be faster. In general CPU's are designed to handle sequential tasks while GPU's have much more capacity for parallel computing. When training a model like this, there are a lot of sequential tasks that take place. With higher dimensional data, the complexity of each of these tasks increases, making parallel processing power more useful. This means that it is not one size fits all whether GPU or CPU is better. This tradeoff also depends on the specific hardware you have access to. Catboost is designed to perform better with GPU when the data size and dimensionality of the data increases.  
 
 Now, let's see how the model performed. First we need to use it to make predictions based on our test set.
