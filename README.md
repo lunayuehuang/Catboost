@@ -1,6 +1,8 @@
 This is a handson designed for Missing data and Categorical Data for UW MSE 544 Big Data and Materials Informatics. 
 In this module.... 
 
+There are 4 questions to answer throughout this module. You can write your answers in markdown cells in your notebook, or in a sepparate file like a word document.
+
 # Setting up Google Colab Notebook
 ### For this tutorial, we will assume you are using Google Colab. If you would prefer not to use Colab, please talk to the course staff.
 
@@ -214,7 +216,7 @@ shap.summary_plot(shap_values, max_display=5)
 
 On this plot, for each feature, there is a dot for every perovskite material (row) from our data. The x-axis is the impact that feature had on the prediction for that material. The color of the dot shows the relative value of that feature for that material. This plot not only helps us identify which features are more impactful, but how exactly the final outcome is being affected.
 
-> **Question 3** Choose one of the features and explain in a few sentences what we can learn from the summary plot about how you chosen feature affects perovskite stability
+> **Question 3:** Choose one of the features and explain in a few sentences what we can learn from the summary plot about how you chosen feature affects perovskite stability
 
 CatBoost also offers a different kind of plot to help us understand the feature importance. It is generated using the method `calc_feature_statistics`
 
@@ -247,4 +249,4 @@ It will look something like this:
 
 ![](plot3.jpg)
 
-> **Question 4** Generate two of these plots - one for a very important feature and one for an unimportant feature. Comment on the difference between the two plots.
+> **Question 4:** Generate two of these plots - one for a very important feature and one for an unimportant feature. Comment on the difference between the two plots.
