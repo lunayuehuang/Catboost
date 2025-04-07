@@ -237,7 +237,7 @@ def enable_plotly_in_cell():
   init_notebook_mode(connected=False)
 ```
 
-Now we can generate out plot like this:
+Now we can generate our plot like this:
 
 ```
 enable_plotly_in_cell()
