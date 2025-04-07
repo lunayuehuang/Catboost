@@ -210,7 +210,7 @@ This gives us bar chart of each feature's average contribution to the final pred
 shap.summary_plot(shap_values, max_display=5)
 ```
 
-![](shap_summary.png)
+![](shap_beeswarm.png)
 
 On this plot, for each feature, there is a dot for every perovskite material (row) from our data. The x-axis is the impact that feature had on the prediction for that material. The color of the dot shows the relative value of that feature for that material. This plot not only helps us identify which features are more impactful, but how exactly the final outcome is being affected.
 
