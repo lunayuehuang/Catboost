@@ -131,17 +131,17 @@ Then, select T4 GPU and press save.
 
 Now try performing the training on the GPU. Since we are connecting to new hardware, our runtime will be reset, so we need to re-run the code from the notebook from scratch.
 
-In this case, the CPU seems to be faster. In general CPU's are designed to handle sequential tasks while GPU's have much more capacity for parallel computing. When training a model like this, there are a lot of sequential tasks that take place. With higher dimensional data, the complexity of each of these tasks increases, making parallel processing power more useful. This means that it is not one size fits all whether GPU or CPU is better. This tradeoff also depends on the specific hardware you have access to. Catboost is designed to perform better with GPU when the data size and dimensionality of the data increases.  
+In this case, the CPU seems to be faster. In general, CPU's are designed to handle sequential tasks while GPU's have much more capacity for parallel computing. When training a model like this, there are a lot of sequential tasks that take place. With higher dimensional data, the complexity of each of these tasks increases, making parallel processing power more useful. This means that it is not one size fits all whether GPU or CPU is better. This tradeoff also depends on the specific hardware you have access to. Catboost is designed to perform better with GPU when the data size and dimensionality of the data increases.  
 
 Now, let's see how the model performed. First we need to use it to make predictions based on our test set.
 ```
 y_pred = model.predict(X_test)
 ```
-Next we'll visualize the results. For regression tasks like this, it is nice to visualize the models performance by creating a scatter plot where the x-axis the actual values and the y-axis is the predicted values. If the model was perfect, all of the points would lie on the line y=x, so it is also helpful to include the line for reference. We can also add another curve below to show the density of points along the x-axis using a kernel density estimator. Try to make one of these plots yourself. LLMs like ChatGPT are quite good at tasks like this. This plot will be part of the submission for this hands on assignment.
+Next we'll visualize the results. For regression tasks like this, it is nice to visualize the models performance by creating a scatter plot where the x-axis the actual values and the y-axis is the predicted values. If the model was perfect, all of the points would lie on the line y=x, so it is also helpful to include the line for reference. We can also add another curve below to show the density of points along the x-axis using a kernel density estimator. Try to make one of these plots yourself. LLMs like ChatGPT are quite good at tasks like this. As we are using Google Colab, you also can try Gemini, which is the generative AI of Google. This plot will be part of the submission for this hands-on assignment.
 
 ![](plot1.jpg)
 
-> **Question 1:** Write a few sentences describing how you generated your plot. If you used AI, say what model you used and qualitatively describe the promting process. If you used prior knowledge or traditional online resources, explain your thought process and how you approached any parts of the task that you didn't know how to do off the top of your head.
+> **Question 1:** Write a few sentences describing how you generated your plot. If you used GenAI, say what model you used and qualitatively describe the prompting process. If you used prior knowledge or traditional online resources, explain your thought process and how you approached any parts of the task that you didn't know how to do off the top of your head.
 
 # Optimizing our Model
 
@@ -155,7 +155,7 @@ Some common parameters are:
 
 There are many different ways to perform hyperparameter tuning. Often, people will search through a set of combinations systematically to see what gives the best results. We'll take a simpler, more manual approach to build our intuition on how these parameters affect our model.
 
-First define a new model with the following parameters:
+First, define a new model with the following parameters:
 
 ```
 params = {"iterations": 1000,
@@ -169,9 +169,9 @@ params = {"iterations": 1000,
 model2 = catboost.CatBoostRegressor(**params)
 ```
 
-Then fit it as we did before. When choosing what parameters to use, it is important to be careful about overfitting. Overfitting occurs when the model performs much better on the training data than it does on unseen data. Ideally, our model would perform the same on the training and validation/test data. In reality, models will naturally perform better on their training data. This is fine as long as the performance doesn't diverge too much. How much overfitting is acceptable is subjective, and depends on the type of model, the dataset, and what you are trying to accomplish. 
+Then fit it as we did before. When choosing what parameters to use, it is important to be careful about overfitting. Overfitting occurs when the model performs much better on the training data than it does on unseen data. Ideally, our model would perform the same on the training and validation/test data. In reality, models will naturally perform better on their training data. This is fine as long as the performance doesn't diverge too much. How much overfitting is acceptable is subjective and depends on the type of model, the dataset, and what you are trying to accomplish. 
 
-Let's take a look at the fit of out model by plotting the train and validation curves. The method `get_evals_result()` will give us a dictionary containing the RMSE for both the training data and validation data at each iteration of our model. These are the same numbers that are output when we trained the model. We can plot it like this:
+Let's take a look at the fit of our model by plotting the training and validation curves. The method `get_evals_result()` will give us a dictionary containing the RMSE for both the training data and validation data at each iteration of our model. These are the same numbers that are output when we trained the model. We can plot it like this:
 
 ```
 scores = model2.get_evals_result()
@@ -189,9 +189,9 @@ See how the validation performance levels off, while the training performance co
 
 Change the *learning rate* to .01 and train a new model. This should prevent the model from memorizing the training data too quickly.
 
-Observe how the this has affected the train and test curves. Next, let's try increasing the *depth* to 6 so that each tree has more predictive power.
+Observe how this has affected the train and test curves. Next, let's try increasing the *depth* to 6 so that each tree has more predictive power.
 
-Again, observe how the this has affected the train and test curves. Let's try increasing the *l2_leaf_reg*. There is a balance here, as setting it too high can again lead to greater errors. Play around with this and choose a value that you think gives a good balance between performance and overfitting. There is no one right answer here, use your intuition and don't spend too much time trying to find a perfect value!
+Again, observe how this has affected the train and test curves. Let's try increasing the *l2_leaf_reg*. There is a balance here, as setting it too high can again lead to greater errors. Play around with this and choose a value that you think gives a good balance between performance and overfitting. There is no one right answer here, use your intuition and don't spend too much time trying to find a perfect value!
 
 > **Question 2:** Write one sentence describing how each hyperparameter change affected the train and test curves. List the value you chose for *l2_leaf_reg* and why you chose it.
 
@@ -219,20 +219,20 @@ shap.plots.bar(shap_values)
 
 ![](shap_bar.png)
 
-This gives us bar chart of each feature's average contribution to the final prediction. There are many other plots as well. Another useful one is the summary plot (also called a beeswarm plot). Try it out:
+This gives us a bar chart of each feature's average contribution to the final prediction. There are many other plots as well. Another useful one is the summary plot (also called a beeswarm plot). Try it out:
 ```
 shap.summary_plot(shap_values, max_display=5)
 ```
 
 ![](shap_beeswarm.png)
 
-On this plot, for each feature, there is a dot for every perovskite material (row) from our data. The x-axis is the impact that feature had on the prediction for that material. The color of the dot shows the relative value of that feature for that material. This plot not only helps us identify which features are more impactful, but how exactly the final outcome is being affected.
+On this plot, for each feature, there is a dot for every perovskite material (row) from our data. The x-axis is the impact that the feature had on the prediction for that material. The color of the dot shows the relative value of that feature for that material. This plot not only helps us identify which features are more impactful but how exactly the outcome is being affected.
 
-> **Question 3:** Choose one of the features and explain in a few sentences what we can learn from the summary plot about how you chosen feature affects perovskite stability
+> **Question 3:** Choose one of the features and explain in a few sentences what we can learn from the summary plot about how your chosen feature affects perovskite stability
 
 CatBoost also offers a different kind of plot to help us understand the feature importance. It is generated using the method `calc_feature_statistics`
 
-In most jupyter environments, the plot can be generated using:
+In most Jupyter environments, the plot can be generated using:
 
 ```
 model5.calc_feature_statistics(X, y, feature, plot=True)
