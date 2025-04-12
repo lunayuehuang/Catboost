@@ -117,7 +117,7 @@ model = catboost.CatBoostClassifier(iterations=100,
                                     task_type="GPU",
                                     devices='0')
 ```
-If you try to run this now, you'll get an error. We need to connect to the GPU. Click on the dropdown in the upper right corner and select "Change runtime type"
+If you try to run this now by doing model.fit again, you'll get an error. We need to connect to the GPU. Click on the dropdown in the upper right corner and select "Change runtime type"
 
 ![](runtime_dropdown.png)
 
