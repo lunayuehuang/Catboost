@@ -237,11 +237,12 @@ On this plot, for each feature, there is a dot for every perovskite material (ro
 
 CatBoost also offers a different kind of plot to help us understand the feature importance. It is generated using the method `calc_feature_statistics`
 
-In most Jupyter environments, the plot can be generated using:
+In most Jupyter environments, the plot can be generated using (if you have already have a model5):
 
 ```
 model5.calc_feature_statistics(X, y, feature, plot=True)
 ```
+
 Because of a quirk in the way Colab works, we have to add a few lines of code to get it to work.
 
 First, define a new function:
