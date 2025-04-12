@@ -198,7 +198,11 @@ Again, observe how this has affected the train and test curves. Let's try increa
 
 # Part 5 Understanding Feature Importance
 
-Now that we have an optimized model, let's look at what features contribute most the to outcome. We will use SHAP values to accomplish this. SHAP values can be used to explain many different machine learning algorithms. CatBoost makes it easy for us to work with SHAP values.
+Now that we have an optimized model, let's look at what features contribute most to the outcome. We will use SHAP values to accomplish this. 
+
+SHAP stands for SHapley Additive exPlanations. It’s a method used to explain the output of a machine learning model by assigning each feature a “contribution value” toward a particular prediction. It works with many models, including Neural Network. 
+
+CatBoost makes it easy for us to work with SHAP values.
 
 First, import the SHAP library
 
