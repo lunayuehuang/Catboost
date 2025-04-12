@@ -25,7 +25,7 @@ Now we can go back to Colab. Click on the files button on the left side of the w
 
 ![](files_button.jpeg)
 
-You will see the options as shown below. Please click here and select "Connect to Google Drive" when prompted.
+You will see the options as shown below. Please click the circled icon and select "Connect to Google Drive" when prompted.
 
 ![](mount_drive.jpeg)
 
