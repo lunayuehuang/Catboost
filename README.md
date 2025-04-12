@@ -14,9 +14,9 @@ Then, create a new notebook:
 
 You can name you notebook something nice like `CatBoost_hands_on`
 
-Next, download the dataset from Canvas's "Missing data and Categorical Data" module 
+Next, download the dataset:Perovskite_Stability_with_features.csv from Canvas's "Missing data and Categorical Data" module 
 
-Colab lets you upload files to your runtime, but they are deleted once it is closed. Instead, we can take advantage of integrated connection to Google Drive. Go to your Google Drive home and click 'New' in the top left corner. Then upload the csv file. Make sure you are signed in to the same Google Account that you are using for Colab
+Colab lets you upload files to your runtime, but they are deleted once it is closed. Instead, we can take advantage of the integrated connection to Google Drive. Go to your Google Drive home and click 'New' in the top left corner. Then upload the csv file. Make sure you are signed in to the same Google Account that you are using for Colab
 
 ![](google_drive.jpg)
 
