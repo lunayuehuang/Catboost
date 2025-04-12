@@ -1,20 +1,20 @@
-This is a handson designed for Missing data and Categorical Data for UW MSE 544 Big Data and Materials Informatics. 
+This is a hands-on designed for the Missing Data and Categorical Data for UW MSE 544 Big Data and Materials Informatics. 
 In this module.... 
 
-There are 4 questions to answer throughout this module. You can write your answers in markdown cells in your notebook, or in a sepparate file like a word document.
+There are 4 questions to answer throughout this module. You can write your answers in markdown cells in your notebook or a separate file like a Word document.
 
 # Setting up Google Colab Notebook
 ### For this tutorial, we will assume you are using Google Colab. If you would prefer not to use Colab, please talk to the course staff.
 
-First, go to https://colab.research.google.com/ and sign in to your UW Google account,(if you haven't activated your UW Google account, here is the [link](https://uwconnect.uw.edu/it?id=kb_article_view&sysparm_article=KB0034358#getting_started) to connect to the page that has instruction of "To activate your UW Google account, follow these steps:"
+First, go to https://colab.research.google.com/ and sign in to your UW Google account. (If you haven't activated your UW Google account, here is the [link](https://uwconnect.uw.edu/it?id=kb_article_view&sysparm_article=KB0034358#getting_started) to connect to the page that has instructions of "To activate your UW Google account follow these steps:"
 
 Then, create a new notebook:
 
 ![](fig1.jpeg)
 
-You can name you notebook something nice like `CatBoost_hands_on`
+You can name your notebook something nice like `CatBoost_hands_on`
 
-Next, download the dataset:Perovskite_Stability_with_features.csv from Canvas's "Missing data and Categorical Data" module 
+Next, download the dataset:`Perovskite_Stability_with_features.csv` from Canvas's "Missing data and Categorical Data" module 
 
 Colab lets you upload files to your runtime, but they are deleted once it is closed. Instead, we can take advantage of the integrated connection to Google Drive. Go to your Google Drive home and click 'New' in the top left corner. Then upload the csv file. Make sure you are signed in to the same Google Account that you are using for Colab
 
