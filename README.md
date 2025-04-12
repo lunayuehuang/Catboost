@@ -111,11 +111,13 @@ model.fit(X_train,y_train,eval_set=(X_val,y_val))
 ```
 That didn't take too long, but we can try using the GPU to speed things up. By default, the CPU is used to train the model. Let's adjust our code to take advantage of the GPU! We can do this by adding the parameter `task_type="GPU"`. Additionally, `devices='0'` lets us specify which GPU to use with 0 based indexing. We only have one so we use GPU 0.
 ```
-model = catboost.CatBoostClassifier(iterations=100,
-                                    learning_rate=0.1,
-                                    depth=6,
+model = catboost.CatBoostRegressor(iterations=1000,
+                                   learning_rate=0.01,
+                                   depth=3,
                                     task_type="GPU",
-                                    devices='0')
+                                   one_hot_max_size = 50,
+                                   cat_features=cat_features,
+                                   verbose = 100,)
 ```
 If you try to run this now by doing model.fit again, you'll get an error. We need to connect to the GPU. Click on the dropdown in the upper right corner and select "Change runtime type"
 
