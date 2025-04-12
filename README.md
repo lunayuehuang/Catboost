@@ -60,7 +60,11 @@ You'll notice that some of the features are categorical data about which element
 ```
 df.iloc[:, 1:7] = df.iloc[:, 1:7].fillna('None')
 ```
+When you run the df.head(), you might notice that there is one column that lists the composition of the materials. Even though it is quite useful information, this is not categorical data, or numbercial data that can be used by the model, we will need to drop this column by doing: 
 
+```
+df = df.drop('Material Composition'],axis=1)
+```
 # Building our first model
 
 Let's train our first model. First, add the import for the CatBoost library to your notebook.
@@ -99,6 +103,11 @@ model = catboost.CatBoostRegressor(iterations=1000,
                                    one_hot_max_size = 50,
                                    cat_features=cat_features,
                                    verbose = 100,)
+```
+Now model is defined, we need to run the model:
+
+```
+model.fit(X_train,y_train,eval_set=(X_val,y_val))
 ```
 That didn't take too long, but we can try using the GPU to speed things up. By default, the CPU is used to train the model. Let's adjust our code to take advantage of the GPU! We can do this by adding the parameter `task_type="GPU"`. Additionally, `devices='0'` lets us specify which GPU to use with 0 based indexing. We only have one so we use GPU 0.
 ```
