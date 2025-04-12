@@ -6,7 +6,7 @@ There are 4 questions to answer throughout this module. You can write your answe
 # Setting up Google Colab Notebook
 ### For this tutorial, we will assume you are using Google Colab. If you would prefer not to use Colab, please talk to the course staff.
 
-First, go to https://colab.research.google.com/ and sign in to your Google account
+First, go to https://colab.research.google.com/ and sign in to your UW Google account,(if you haven't activated your UW Google account, here is the [link](https://uwconnect.uw.edu/it?id=kb_article_view&sysparm_article=KB0034358#getting_started) to connect to the page that has instruction of "To activate your UW Google account, follow these steps:"
 
 Then, create a new notebook:
 
