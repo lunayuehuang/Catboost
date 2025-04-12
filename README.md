@@ -1,9 +1,9 @@
-This is a hands-on designed for the Missing Data and Categorical Data for UW MSE 544 Big Data and Materials Informatics. 
+This is a hands-on design for the Missing Data and Categorical Data for UW MSE 544 Big Data and Materials Informatics. 
 In this module.... 
 
 There are 4 questions to answer throughout this module. You can write your answers in markdown cells in your notebook or a separate file like a Word document.
 
-# Setting up Google Colab Notebook
+# Part 1 Setting up Google Colab Notebook
 ### For this tutorial, we will assume you are using Google Colab. If you would prefer not to use Colab, please talk to the course staff.
 
 First, go to https://colab.research.google.com/ and sign in to your UW Google account. (If you haven't activated your UW Google account, here is the [link](https://uwconnect.uw.edu/it?id=kb_article_view&sysparm_article=KB0034358#getting_started) to connect to the page that has instructions of "To activate your UW Google account follow these steps:"
@@ -39,7 +39,8 @@ Finally, we need install our libraries. Most of what we need is installed in Col
 > NOTE: In most environments we work in we only need to install packages once. However, with Colab, our environment is deleted when we disconnect, so we will have to do this every time we open our notebook. 
 
 Now we are ready to get to work!
-# Familiarize yourself with the data
+
+# Part 2 Familiarize yourself with the data
 Our dataset was assembled for the purpose of predicting the stability of perovskites. These materials generally have a composition of $$ABX_3$$ and have a characteristic crystal structure. You can read more about these materials [here](https://en.wikipedia.org/wiki/Perovskite_(structure)). The stability of these materials is quantified by the Energy Above Hull, which is determined using DFT calculations. The lower this value, the more stable the material. The rest of the features in the dataset are properties obtained from [the Materials Project](https://next-gen.materialsproject.org/)
 
 Let's load the data in our jupyter notebook. The file path shown below assumes you saved your dataset to the highest level of your Google Drive. If you put it in some folder, you will have to change the path to point to that folder.
@@ -65,7 +66,7 @@ When you run the df.head(), you might notice that there is one column that lists
 ```
 df = df.drop('Material Composition'],axis=1)
 ```
-# Building our first model
+# Part 3 Building our first model
 
 Let's train our first model. First, add the import for the CatBoost library to your notebook.
 ```
@@ -143,7 +144,7 @@ Next we'll visualize the results. For regression tasks like this, it is nice to 
 
 > **Question 1:** Write a few sentences describing how you generated your plot. If you used GenAI, say what model you used and qualitatively describe the prompting process. If you used prior knowledge or traditional online resources, explain your thought process and how you approached any parts of the task that you didn't know how to do off the top of your head.
 
-# Optimizing our Model
+# Part 4 Optimizing our Model
 
 When we define our model, we have a lot of control over the parameters that we use. These will affect the performance of our model. Lets optimize a few of these to improve the performance of our model. This process is called hyperparameter tuning.
 
@@ -195,7 +196,7 @@ Again, observe how this has affected the train and test curves. Let's try increa
 
 > **Question 2:** Write one sentence describing how each hyperparameter change affected the train and test curves. List the value you chose for *l2_leaf_reg* and why you chose it.
 
-# Understanding Feature Importance
+# Part 5 Understanding Feature Importance
 
 Now that we have an optimized model, let's look at what features contribute most the to outcome. We will use SHAP values to accomplish this. SHAP values can be used to explain many different machine learning algorithms. CatBoost makes it easy for us to work with SHAP values.
 
