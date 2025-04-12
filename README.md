@@ -240,6 +240,7 @@ CatBoost also offers a different kind of plot to help us understand the feature 
 In most Jupyter environments, the plot can be generated using (if you have already have a model5):
 
 ```
+feature = 'Asite_BCCefflatcnt_range'
 model5.calc_feature_statistics(X, y, feature, plot=True)
 ```
 
