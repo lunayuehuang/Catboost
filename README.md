@@ -35,6 +35,7 @@ Finally, we need install our libraries. Most of what we need is installed in Col
 %pip install catboost
 ```
 > NOTE: You will need to restart your kernel: go to the top bar and in the `Runtime` menu, select `restart session`. 
+>
 > NOTE: In most environments we work in we only need to install packages once. However, with Colab, our environment is deleted when we disconnect, so we will have to do this every time we open our notebook. 
 
 Now we are ready to get to work!
