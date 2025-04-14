@@ -61,19 +61,17 @@ You'll notice that some of the features are categorical data about which element
 ```
 df.iloc[:, 1:7] = df.iloc[:, 1:7].fillna('None')
 ```
-When you run the df.head(), you might notice that there is one column that lists the composition of the materials. Even though it is quite useful information, this is not categorical data, or numbercial data that can be used by the model, we will need to drop this column by doing: 
+> NOTE: Filling the missing values in this way is simple, and good enough for what we are doing. However, when deciding how to handle missing data in the future, you may want to use information from the data to fill the missing values in a way that carries more information. For example, in this case, it could be useful to fill the missing values with the other elements that occupy that site, since that is more accurate to the physical system. When making these decisions, domain knowledge is especially important.
 
-```
-df = df.drop('Material Composition'],axis=1)
-```
 # Part 3 Building our first model
 
 Let's train our first model. First, add the import for the CatBoost library to your notebook.
 ```
 import catboost
 ```
-Next, we'll split our data for training and testing. In this case, we can use a random split. First we'll separate out our input and target features. The 'Material Composition' column is there for identification, but is not useful for our model, so we'll remove it. Our target is the column 'energy_above_hull (meV/atom)'. The rest of the columns will be out input.
+Next, we'll split our data for training and testing. In this case, we can use a random split. First we'll separate out our input and target features. The 'Material Composition' column is there for identification, but is not useful for our model because it is not numerical or categorical data, so we'll remove it. Our target is the column 'energy_above_hull (meV/atom)'. The rest of the columns will be out input.
 ```
+df = df.drop('Material Composition'],axis=1)
 X = df.drop(['energy_above_hull (meV/atom)'], axis=1)
 y = df['energy_above_hull (meV/atom)']
 ```
@@ -267,5 +265,7 @@ x = model5.calc_feature_statistics(X, y, feature, plot=True)
 It will look something like this:
 
 ![](plot3.jpg)
+
+Because decision trees use greater than and less than comparisons to differentiate values, there are arbibrary ranges of values that will give the same prediction. We call these ranges bins. The green bars show how many objects fall into each bin. The blue and red lines show the average target and prediction for objects that fall into each bin. The purple line shows us what the average prediction would be if the value of the chosen feature was changed so that all objects fell into that bin.
 
 > **Question 4:** Generate two of these plots - one for a very important feature and one for an unimportant feature. Comment on the difference between the two plots.
