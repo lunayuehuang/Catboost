@@ -168,7 +168,7 @@ params = {"iterations": 1000,
 model2 = catboost.CatBoostRegressor(**params)
 ```
 
-Then fit it as we did before. When choosing what parameters to use, it is important to be careful about overfitting. Overfitting occurs when the model performs much better on the training data than it does on unseen data. Ideally, our model would perform the same on the training and validation/test data. In reality, models will naturally perform better on their training data. This is fine as long as the performance doesn't diverge too much. How much overfitting is acceptable is subjective and depends on the type of model, the dataset, and what you are trying to accomplish. 
+**Then fit it as we did before**. When choosing what parameters to use, it is important to be careful about overfitting. Overfitting occurs when the model performs much better on the training data than it does on unseen data. Ideally, our model would perform the same on the training and validation/test data. In reality, models will naturally perform better on their training data. This is fine as long as the performance doesn't diverge too much. How much overfitting is acceptable is subjective and depends on the type of model, the dataset, and what you are trying to accomplish. 
 
 Let's take a look at the fit of our model by plotting the training and validation curves. The method `get_evals_result()` will give us a dictionary containing the RMSE for both the training data and validation data at each iteration of our model. These are the same numbers that are output when we trained the model. We can plot it like this:
 
