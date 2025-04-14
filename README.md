@@ -208,7 +208,7 @@ First, import the SHAP library
 import shap
 ```
 
-We first create an Explainer object for our model, then pass it our data to get the SHAP values.
+We first create an Explainer object for our model, then pass it our data to get the SHAP values. (You should change 'model' to be the name you gave your best model from the last section)
 
 ```
 explainer = shap.Explainer(model)
@@ -235,7 +235,7 @@ On this plot, for each feature, there is a dot for every perovskite material (ro
 
 CatBoost also offers a different kind of plot to help us understand the feature importance. It is generated using the method `calc_feature_statistics`
 
-In most Jupyter environments, the plot can be generated using (if you have already have a model5):
+In most Jupyter environments, the plot can be generated using (assuming model5 is the name of your last model):
 
 ```
 feature = 'Asite_BCCefflatcnt_range'
