@@ -71,7 +71,7 @@ import catboost
 ```
 Next, we'll split our data for training and testing. In this case, we can use a random split. First we'll separate out our input and target features. The 'Material Composition' column is there for identification, but is not useful for our model because it is not numerical or categorical data, so we'll remove it. Our target is the column 'energy_above_hull (meV/atom)'. The rest of the columns will be out input.
 ```
-df = df.drop('Material Composition'],axis=1)
+df = df.drop(['Material Composition'],axis=1)
 X = df.drop(['energy_above_hull (meV/atom)'], axis=1)
 y = df['energy_above_hull (meV/atom)']
 ```
