@@ -128,7 +128,7 @@ model = catboost.CatBoostRegressor(iterations=1000,
                                    learning_rate=0.01,
                                    depth=3,
                                     task_type="GPU",
-                                   one_hot_max_size = 50,
+                                   one_hot_max_size = 50, # controls when categorical features are one-hot encoded vs target-encoded
                                    cat_features=cat_features,
                                    verbose = 100,)
 ```
