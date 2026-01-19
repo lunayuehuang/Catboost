@@ -1,5 +1,12 @@
 This is a hands-on assignment designed for the Missing Data and Categorical Data for UW MSE 544 Big Data and Materials Informatics By Professor Luna Yue Huang
 
+### Learning Objectives
+By the end of this module, you will be able to:
+- Train a CatBoost regression model with mixed numerical and categorical data
+- Handle missing categorical data in a physically meaningful way
+- Diagnose overfitting using training and validation curves
+- Interpret model behavior using SHAP values and feature statistics
+
 There are 4 questions to answer throughout this module. You can write your answers in markdown cells in your notebook or a separate file like a Word document.
 
 # Part 1 Setting up Google Colab Notebook
@@ -93,6 +100,9 @@ Finally, we need to tell the model which columns contain categorical data. One w
 ```
 cat_features = list(range(0,7))
 ```
+> NOTE: If you change column order or add/remove features, you must update
+> `cat_features` accordingly. A safer alternative is to identify categorical
+> columns by name and convert them to indices programmatically.
 
 Now we can create a model with some default parameters and train it using our data. CatBoost offeres two types of model: classifier and regressor. Since we are performing a regression task, we will use regressor.
 ```
@@ -109,6 +119,10 @@ Now model is defined, we need to run the model:
 model.fit(X_train,y_train,eval_set=(X_val,y_val))
 ```
 That didn't take too long, but we can try using the GPU to speed things up. By default, the CPU is used to train the model. Let's adjust our code to take advantage of the GPU! We can do this by adding the parameter `task_type="GPU"`. Additionally, `devices='0'` lets us specify which GPU to use with 0 based indexing. We only have one so we use GPU 0.
+
+> NOTE: Model training may take couple minutes on CPU depending on runtime load.
+> GPU acceleration may or may not be faster for this dataset due to its size.
+
 ```
 model = catboost.CatBoostRegressor(iterations=1000,
                                    learning_rate=0.01,
