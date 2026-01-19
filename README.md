@@ -109,7 +109,7 @@ Now we can create a model with some default parameters and train it using our da
 model = catboost.CatBoostRegressor(iterations=1000,
                                    learning_rate=0.01,
                                    depth=3,
-                                   one_hot_max_size = 50,
+                                   one_hot_max_size = 50, # controls when categorical features are one-hot encoded vs target-encoded
                                    cat_features=cat_features,
                                    verbose = 100,)
 ```
@@ -175,7 +175,7 @@ params = {"iterations": 1000,
           "depth": 3,
           "learning_rate": 0.1,
           "l2_leaf_reg": 1,
-          "one_hot_max_size": 50,
+          "one_hot_max_size": 50, # controls when categorical features are one-hot encoded vs target-encoded
           "verbose": 100,
           "loss_function": "RMSE",
           "cat_features": cat_features}
