@@ -282,4 +282,6 @@ It will look something like this:
 
 Because decision trees use greater than and less than comparisons to differentiate values, there are arbibrary ranges of values that will give the same prediction. We call these ranges bins. The green bars show how many objects fall into each bin. The blue and red lines show the average target and prediction for objects that fall into each bin. The purple line shows us what the average prediction would be if the value of the chosen feature was changed so that all objects fell into that bin.
 
+This plot helps bridge ML outputs with physical intuition by showing how model predictions change across physically meaningful value ranges. 
+
 > **Question 4:** Generate two of these plots - one for a very important feature and one for an unimportant feature. Comment on the difference between the two plots.
