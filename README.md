@@ -206,7 +206,7 @@ Observe how this has affected the train and test curves. Next, let's try increas
 
 Again, observe how this has affected the train and test curves. Let's try increasing the *l2_leaf_reg*. There is a balance here, as setting it too high can again lead to greater errors. Play around with this and choose a value that you think gives a good balance between performance and overfitting. There is no one right answer here, use your intuition and don't spend too much time trying to find a perfect value!
 
-> **Question 2:** Write one sentence describing how each hyperparameter change affected the train and test curves. List the value you chose for *l2_leaf_reg* and why you chose it.
+> **Question 2:** Write one sentence describing how each hyperparameter change affected the train and test curves. Indicate the value you chose for *l2_leaf_reg* and justify it.
 
 # Part 5 Understanding Feature Importance
 
