@@ -1,4 +1,4 @@
-This is a hands-on assignment designed for the Missing Data and Categorical Data for UW MSE 544 Big Data and Materials Informatics. 
+This is a hands-on assignment designed for the Missing Data and Categorical Data for UW MSE 544 Big Data and Materials Informatics By Professor Luna Yue Huang
 
 There are 4 questions to answer throughout this module. You can write your answers in markdown cells in your notebook or a separate file like a Word document.
 
