@@ -7,7 +7,7 @@ By the end of this module, you will be able to:
 - Diagnose overfitting using training and validation curves
 - Interpret model behavior using SHAP values and feature statistics
 
-There are 4 questions to answer throughout this module. You can write your answers in markdown cells in your notebook or a separate file like a Word document.
+There are 6 questions to answer throughout this module. You can write your answers in markdown cells in your notebook or a separate file like a Word document.
 
 # Part 1 Setting up Google Colab Notebook
 ### For this tutorial, we will assume you are using Google Colab. If you would prefer not to use Colab, please talk to the course staff.
@@ -68,6 +68,8 @@ You'll notice that some of the features are categorical data about which element
 ```
 df.iloc[:, 1:7] = df.iloc[:, 1:7].fillna('None')
 ```
+> **Question 1:** Replace the missing numerical values (NaN) with the column averages. Show the code you used and briefly explain why this approach is reasonable.
+> 
 > NOTE: Filling the missing values in this way is simple, and good enough for what we are doing. However, when deciding how to handle missing data in the future, you may want to use information from the data to fill the missing values in a way that carries more information. For example, in this case, it could be useful to fill the missing values with the other elements that occupy that site, since that is more accurate to the physical system. When making these decisions, domain knowledge is especially important.
 
 # Part 3 Building our first model
@@ -154,7 +156,7 @@ Next we'll visualize the results. For regression tasks like this, it is nice to 
 
 ![](plot1.jpg)
 
-> **Question 1:** Write a few sentences describing how you generated your plot. If you used GenAI, say what model you used and qualitatively describe the prompting process. If you used prior knowledge or traditional online resources, explain your thought process and how you approached any parts of the task that you didn't know how to do off the top of your head.
+> **Question 2:** Write a few sentences describing how you generated your plot. If you used GenAI, say what model you used and qualitatively describe the prompting process. If you used prior knowledge or traditional online resources, explain your thought process and how you approached any parts of the task that you didn't know how to do off the top of your head.
 
 # Part 4 Optimizing our Model
 
@@ -206,7 +208,7 @@ Observe how this has affected the train and test curves. Next, let's try increas
 
 Again, observe how this has affected the train and test curves. Let's try increasing the *l2_leaf_reg*. There is a balance here, as setting it too high can again lead to greater errors. Play around with this and choose a value that you think gives a good balance between performance and overfitting. There is no one right answer here, use your intuition and don't spend too much time trying to find a perfect value!
 
-> **Question 2:** Write one sentence describing how each hyperparameter change affected the train and test curves. Indicate the value you chose for *l2_leaf_reg* and justify it.
+> **Question 3:** Write one sentence describing how each hyperparameter change affected the train and test curves. Indicate the value you chose for *l2_leaf_reg* and justify it.
 
 # Part 5 Understanding Feature Importance
 
@@ -229,6 +231,8 @@ explainer = shap.Explainer(model)
 shap_values = explainer(X_train)
 ```
 
+> **Question 4:** Come up another way to obtain SHAP values and compare the differences between the two methods.
+> 
 Now we can use the shap library to generate some plots to help us understand how our features contribute to the final prediction. Try:
 ```
 shap.plots.bar(shap_values)
@@ -245,7 +249,7 @@ shap.summary_plot(shap_values, max_display=5)
 
 On this plot, for each feature, there is a dot for every perovskite material (row) from our data. The x-axis is the impact that the feature had on the prediction for that material. The color of the dot shows the relative value of that feature for that material. This plot not only helps us identify which features are more impactful but how exactly the outcome is being affected.
 
-> **Question 3:** Choose one of the features and explain in a few sentences what we can learn from the summary plot about how your chosen feature affects perovskite stability
+> **Question 5:** Choose one of the features and explain in a few sentences what we can learn from the summary plot about how your chosen feature affects perovskite stability
 
 CatBoost also offers a different kind of plot to help us understand the feature importance. It is generated using the method `calc_feature_statistics`
 
@@ -284,4 +288,4 @@ Because decision trees use greater than and less than comparisons to differentia
 
 This plot helps bridge ML outputs with physical intuition by showing how model predictions change across physically meaningful value ranges. 
 
-> **Question 4:** Generate two of these plots - one for a very important feature and one for an unimportant feature. Comment on the difference between the two plots.
+> **Question 6:** Generate two of these plots - one for a very important feature and one for an unimportant feature. Comment on the difference between the two plots.
